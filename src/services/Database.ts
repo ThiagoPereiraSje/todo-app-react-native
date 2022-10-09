@@ -37,9 +37,21 @@ export default class Database {
     }
   }
 
+  static async restore() {
+    try {
+      const path = RNFS.DownloadDirectoryPath + '/test.txt';
+      const content = await RNFS.readFile(path, 'utf8');
+
+      console.info('conteudo: ', content);
+    } catch (e) {
+      console.error('SQLite Erro: ' + (e.message || e));
+    }
+  }
+
   static async init() {
     if (!this.instance) {
       await this.open();
+      await this.restore();
       // await this.dropTables();
       // await this.createTables();
     } else {
