@@ -10,8 +10,11 @@
 
 import React from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
+import Database from './src/services/Database';
 
 const App = () => {
+  Database.init();
+
   return (
     <NativeBaseProvider>
       <StatusBar hidden />
