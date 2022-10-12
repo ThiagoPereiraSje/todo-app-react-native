@@ -19,7 +19,7 @@ const App = () => {
 
   return (
     <NativeBaseProvider theme={theme}>
-      <StatusBar />
+      <StatusBar hidden />
       <Home />
     </NativeBaseProvider>
   );

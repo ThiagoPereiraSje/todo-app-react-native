@@ -1,13 +1,12 @@
 import React from 'react';
-import {Box, Text} from 'native-base';
-import Spinner from '../components/Spinner';
+import {Box} from 'native-base';
+import TitleBar from '../components/TitleBar';
 
 export default function Home() {
   return (
     <>
       <Box>
-        <Text>Home Page</Text>
-        <Spinner />
+        <TitleBar leftTitle="Home Page" rightTitle="@" />
       </Box>
     </>
   );
