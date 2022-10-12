@@ -10,14 +10,17 @@
 
 import React from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
+import theme from './src/theme';
 import Database from './src/services/database';
+import Home from './src/pages/home';
 
 const App = () => {
   Database.init();
 
   return (
-    <NativeBaseProvider>
-      <StatusBar hidden />
+    <NativeBaseProvider theme={theme}>
+      <StatusBar />
+      <Home />
     </NativeBaseProvider>
   );
 };
