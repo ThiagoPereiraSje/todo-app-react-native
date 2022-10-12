@@ -25,6 +25,59 @@ export default class Database {
     }
   }
 
+  static async close() {
+    console.info('Fechando a Conexão com o Banco de Dados!');
+
+    try {
+      await this.instance.close();
+      console.info('Banco de Dados Fechado com Sucesso!');
+    } catch (e) {
+      console.error('SQLite Erro: ' + (e.message || e));
+    }
+  }
+
+  static async delete() {
+    console.info('Excluindo o Banco de Dados!');
+
+    try {
+      await SQLite.deleteDatabase({name: db_name, location: 'default'});
+      console.info('Banco de Dados Excluído com Sucesso!');
+    } catch (e) {
+      console.error('SQLite Erro: ' + (e.message || e));
+    }
+  }
+
+  static async dropTables() {
+    console.info('Excluindo as Tabelas do Banco de Dados!');
+
+    await this.instance.executeSql('DROP TABLE IF EXISTS tasks;', []);
+
+    console.info('Tabelas Excluídas com Sucesso!');
+  }
+
+  static async createTables() {
+    console.info('Criando as Tabelas do Banco de Dados!');
+
+    try {
+      await this.instance.executeSql(
+        'CREATE TABLE IF NOT EXISTS tasks (' +
+          'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
+          'title VARCHAR(255) NOT NULL,' +
+          'subtitle VARCHAR(255) NOT NULL,' +
+          'duration UNSIGNED BIG INT,' +
+          'runtime UNSIGNED BIG INT,' +
+          'completed_time UNSIGNED BIG INT,' +
+          'status VARCHAR(50),' +
+          'fullyCompletedAt UNSIGNED BIG INT );',
+        [],
+      );
+
+      console.info('Tabelas criadas com sucesso!');
+    } catch (e) {
+      console.error('SQLite Erro: ' + (e.message || e));
+    }
+  }
+
   static async backup() {
     try {
       const path = RNFS.DownloadDirectoryPath + '/test.txt';
@@ -51,9 +104,8 @@ export default class Database {
   static async init() {
     if (!this.instance) {
       await this.open();
-      await this.restore();
       // await this.dropTables();
-      // await this.createTables();
+      await this.createTables();
     } else {
       console.info('Banco de dados já está iniciado!');
     }
