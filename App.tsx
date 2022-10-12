@@ -10,7 +10,7 @@
 
 import React from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
-import Database from './src/services/Database';
+import Database from './src/services/database';
 
 const App = () => {
   Database.init();
