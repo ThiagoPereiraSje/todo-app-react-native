@@ -3,7 +3,6 @@ import {Box} from 'native-base';
 import TitleBar from '../components/TitleBar';
 import IconButton from '../components/IconButton';
 import InputMask, {formatTime} from '../components/InputMask';
-import MenuItem from '../components/MenuItem';
 
 export default function Home() {
   const [text, setText] = useState('');
@@ -21,7 +20,6 @@ export default function Home() {
           onChangeText={value => setText(value)}
         />
 
-        <MenuItem label="MenuItem" />
       </Box>
     </>
   );

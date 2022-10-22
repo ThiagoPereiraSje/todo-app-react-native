@@ -13,14 +13,14 @@ type ChildrenProps = {
 
 type DrawerActions = {
   setDrawer: (drawer: DrawerLayoutAndroid) => void;
-  setDisable: (disable: boolean) => void;
+  setDisabled: (disabled: boolean) => void;
   openDrawer: () => void;
   closeDrawer: () => void;
 };
 
 type DrawerState = {
   drawer: DrawerLayoutAndroid;
-  disable: boolean;
+  disabled: boolean;
 };
 
 const ActionsContext = createContext<DrawerActions>(undefined);
@@ -36,11 +36,11 @@ export const useDrawerState = (): DrawerState => {
 
 export default function DrawerProvider({children}: ChildrenProps) {
   const [drawer, setDrawer] = useState<DrawerLayoutAndroid>();
-  const [disable, setDisable] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const state: DrawerState = useMemo(
-    () => ({drawer, disable}),
-    [drawer, disable],
+    () => ({drawer, disabled}),
+    [drawer, disabled],
   );
 
   const actions: DrawerActions = useMemo(
@@ -48,8 +48,8 @@ export default function DrawerProvider({children}: ChildrenProps) {
       setDrawer: curDrawer => {
         setDrawer(curDrawer);
       },
-      setDisable: curValue => {
-        setDisable(curValue);
+      setDisabled: curValue => {
+        setDisabled(curValue);
       },
       openDrawer: () => {
         drawer?.openDrawer();

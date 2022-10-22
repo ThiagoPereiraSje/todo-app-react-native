@@ -1,15 +1,18 @@
 import React from 'react';
-import {Avatar, Box, Text} from 'native-base';
+import {Box, Text, Image} from 'native-base';
 import MenuItem from '../MenuItem';
+import {useRouteAction} from '../../contexts/route';
 
 type NavViewProps = {
   content?: JSX.Element;
 };
 
 function DefaultContent() {
+  const {goBack} = useRouteAction();
+
   return (
     <Box>
-      <MenuItem label="Voltar" />
+      <MenuItem label="Voltar" onPress={goBack} />
     </Box>
   );
 }
@@ -18,7 +21,12 @@ export default function NavView({content}: NavViewProps) {
   return (
     <Box bgColor="pri.800" flex={1}>
       <Box alignItems="center" p="20px">
-        <Avatar source={require('../../assets/user.png')} size="xl" />
+        <Image
+          source={require('./user.png')}
+          alt="Thiago Pereira"
+          size="xl"
+          borderRadius="full"
+        />
 
         <Text fontWeight="bold" fontSize={20}>
           Thiago Pereira

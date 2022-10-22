@@ -12,7 +12,7 @@ import React from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import theme from './src/theme';
 import Database from './src/services/database';
-import Home from './src/pages/home';
+import Navigator from './src/components/Navigator';
 import DrawerProvider from './src/contexts/drawer';
 import RouterProvider from './src/contexts/route';
 
@@ -24,7 +24,7 @@ const App = () => {
       <DrawerProvider>
         <RouterProvider>
           <StatusBar hidden />
-          <Home />
+          <Navigator />
         </RouterProvider>
       </DrawerProvider>
     </NativeBaseProvider>
