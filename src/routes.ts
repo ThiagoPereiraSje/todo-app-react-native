@@ -1,3 +1,3 @@
 export const Routes = {
-  Home: 0,
+  TaskList: 0,
 };

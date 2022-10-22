@@ -8,7 +8,7 @@ import React, {
 import {Routes} from '../routes';
 import {useDrawerActions} from './drawer';
 
-const INITIAL_ROUTE = Routes.Home;
+const INITIAL_ROUTE = Routes.TaskList;
 
 type ChildrenProps = {
   children: ReactNode;
