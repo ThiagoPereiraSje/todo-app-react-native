@@ -11,14 +11,11 @@
 import React from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import theme from './src/theme';
-import Database from './src/services/database';
 import Navigator from './src/components/Navigator';
 import DrawerProvider from './src/contexts/drawer';
 import RouterProvider from './src/contexts/route';
 
 const App = () => {
-  Database.init();
-
   return (
     <NativeBaseProvider theme={theme}>
       <DrawerProvider>

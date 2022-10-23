@@ -1,4 +1,4 @@
-type Status = 'TODO' | 'DONE';
+export type Status = 'TODO' | 'DONE';
 
 export default class Task {
   constructor(
