@@ -25,7 +25,7 @@ export default function TaskList() {
   const handleLoad = async (status: TaskStatus) => {
     const order =
       status === 'TODO'
-        ? ' ORDER BY runtime ASC LIMIT 50 '
+        ? ' ORDER BY completed_time ASC LIMIT 50 '
         : ' ORDER BY fullyCompletedAt DESC LIMIT 50 ';
 
     const newTasks = await TaskDAO.list(` WHERE status = ? ${order}`, [status]);
