@@ -4,13 +4,17 @@ import Drawer from './drawer';
 
 import TaskList, {Menu as TaskListMenu} from './task/List';
 import {useRouteState} from '../contexts/route';
+import TaskForm from './task/Form';
 
 type Route = {
   component: React.ReactNode;
   menu?: JSX.Element;
 };
 
-const routes: Route[] = [{component: <TaskList />, menu: <TaskListMenu />}];
+const routes: Route[] = [
+  {component: <TaskList />, menu: <TaskListMenu />},
+  {component: <TaskForm />},
+];
 
 export default function Navigator() {
   const {route} = useRouteState();
