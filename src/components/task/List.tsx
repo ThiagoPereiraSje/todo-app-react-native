@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Text} from 'native-base';
+import {Box, Text, ScrollView} from 'native-base';
 import MenuItem from '../MenuItem';
 import Spinner from '../Spinner';
 
 import Task, {Status as TaskStatus} from '../../entities/task';
 import TaskDAO from '../../services/database/taskDAO';
+import TitleBar from '../TitleBar';
 
 export function Menu() {
   return (
@@ -46,7 +47,27 @@ export default function TaskList() {
         <Spinner />
       ) : (
         <Box>
-          <Text>Task List</Text>
+          <TitleBar leftTitle="Tarefas" />
+
+          {tasks.length ? (
+            <ScrollView marginBottom={7}>
+              {tasks.map(t => (
+                <Text key={t.id}>{t.title}</Text>
+              ))}
+            </ScrollView>
+          ) : (
+            <Box height="full" alignItems="center" bgColor="sec.650">
+              <Text
+                marginTop="2/3"
+                marginLeft={6}
+                marginRight={6}
+                fontSize="22px"
+                fontWeight="bold"
+                textAlign="center">
+                Nenhuma Tarefa foi encontrada!
+              </Text>
+            </Box>
+          )}
         </Box>
       )}
     </>

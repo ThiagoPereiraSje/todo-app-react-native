@@ -20,7 +20,13 @@ export default function MenuItem({
       flexDirection="row"
       alignItems="center"
       p="8px">
-      <Icon as={FaIcon} textAlign="center" name={iconName} marginRight="8px" />
+      <Icon
+        as={FaIcon}
+        size={6}
+        textAlign="center"
+        name={iconName}
+        marginRight="8px"
+      />
 
       <Text>{label}</Text>
     </Pressable>
