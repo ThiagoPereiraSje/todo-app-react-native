@@ -46,7 +46,7 @@ export default function TaskList() {
       {loading ? (
         <Spinner />
       ) : (
-        <Box>
+        <>
           <TitleBar leftTitle="Tarefas" />
 
           {tasks.length ? (
@@ -68,7 +68,7 @@ export default function TaskList() {
               </Text>
             </Box>
           )}
-        </Box>
+        </>
       )}
     </>
   );
