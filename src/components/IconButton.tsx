@@ -15,11 +15,18 @@ export default function IconButton({
   return (
     <NBIconButton
       icon={
-        <Icon as={FaIcon} textAlign="center" name={iconName} color={color} />
+        <Icon
+          as={FaIcon}
+          textAlign="center"
+          size="md"
+          name={iconName}
+          color={color}
+        />
       }
       borderRadius="full"
       size="lg"
       bgColor="rgba(0,0,0,0.4)"
+      _pressed={{bgColor: 'rgba(0,0,0,0.6)'}}
       textAlign="center"
       {...rest}
     />

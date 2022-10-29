@@ -51,7 +51,7 @@ export default function TaskList() {
           <TitleBar leftTitle="Tarefas" />
 
           {tasks.length ? (
-            <ScrollView marginBottom={7}>
+            <ScrollView marginBottom="1" h="full">
               {tasks.map(t => (
                 <TaskComponent key={t.id} task={t} />
               ))}

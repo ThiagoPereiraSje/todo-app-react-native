@@ -1,6 +1,6 @@
 import React from 'react';
 import Task from '../../entities/task';
-import {Text, Stack, Progress, Menu} from 'native-base';
+import {Text, Stack, Progress} from 'native-base';
 import IconButton from '../IconButton';
 
 type TaskProps = {
@@ -25,31 +25,32 @@ export default function index({task}: TaskProps) {
       marginBottom="2"
       alignItems="center"
       paddingLeft="3"
+      paddingRight="3"
       height="20">
       <IconButton {...icon} />
       <Stack direction="column" space={0.4} flex={1}>
         <Text fontWeight="bold">{task.title}</Text>
         <Text>{task.subtitle}</Text>
-        <Progress
-          size="md"
-          marginTop="1"
-          min={0}
-          max={task.duration}
-          value={task.completed_time}
-        />
       </Stack>
+      <Progress
+        size="xl"
+        w="150"
+        marginTop="1"
+        min={0}
+        max={task.duration}
+        value={task.completed_time}
+      />
       <Text>{`${calcPercent(task.completed_time, task.duration)} %`}</Text>
-      <Menu
-        w="190"
-        bgColor="sec.700"
-        trigger={props => (
-          <IconButton iconName="ellipsis-v" color="white" {...props} />
-        )}>
-        <Menu.Item>Iniciar</Menu.Item>
-        <Menu.Item>Editar</Menu.Item>
-        <Menu.Item>Resetar Progresso</Menu.Item>
-        <Menu.Item>Excluir</Menu.Item>
-      </Menu>
+
+      {task.status === 'TODO' ? (
+        <>
+          <IconButton key="play" iconName="play" color="white" />
+        </>
+      ) : (
+        <>
+          <IconButton key="reset" iconName="rotate-left" color="white" />
+        </>
+      )}
     </Stack>
   );
 }
