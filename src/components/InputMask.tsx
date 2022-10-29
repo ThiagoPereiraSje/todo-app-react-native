@@ -2,25 +2,29 @@ import React from 'react';
 import {Input, IInputProps} from 'native-base';
 
 interface InputMaskProps extends IInputProps {
-  onMaskText: (text: string) => string;
+  mask: RegExp;
+  replace: RegExp;
+  delimiter: string;
   onChangeText: (text: string) => void;
 }
 
-export function formatTime(value: string): string {
-  return value
-    .replace(/\D/g, '')
-    .replace(/(\d{2})/, '$1:')
-    .replace(/(\d{2}:\d{2})/, '$1:');
-}
-
 export default function InputMask({
-  onMaskText,
+  mask,
+  replace,
+  delimiter,
   onChangeText,
   ...rest
 }: InputMaskProps) {
-  const handleChangeText = (text: string) => {
-    onChangeText(onMaskText(text));
+  const handleMask = (value: string) => {
+    if (mask.test(value)) {
+      const newValue = value.match(mask);
+      onChangeText(newValue.join(delimiter));
+
+      return;
+    }
+
+    onChangeText(value.replace(replace, ''));
   };
 
-  return <Input {...rest} onChangeText={handleChangeText} />;
+  return <Input {...rest} onChangeText={handleMask} />;
 }
