@@ -5,13 +5,12 @@ import FaIcon from 'react-native-vector-icons/FontAwesome';
 type IconButtonProps = {
   iconName: string;
   color?: string;
-  _pressed?: IIconButtonProps;
-};
+} & IIconButtonProps;
 
 export default function IconButton({
   iconName,
   color = 'white',
-  _pressed,
+  ...rest
 }: IconButtonProps) {
   return (
     <NBIconButton
@@ -19,9 +18,10 @@ export default function IconButton({
         <Icon as={FaIcon} textAlign="center" name={iconName} color={color} />
       }
       borderRadius="full"
+      size="lg"
       bgColor="rgba(0,0,0,0.4)"
-      _pressed={_pressed}
       textAlign="center"
+      {...rest}
     />
   );
 }

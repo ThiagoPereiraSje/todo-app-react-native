@@ -6,6 +6,7 @@ import Spinner from '../Spinner';
 import Task, {Status as TaskStatus} from '../../entities/task';
 import TaskDAO from '../../services/database/taskDAO';
 import TitleBar from '../TitleBar';
+import TaskComponent from './index';
 
 export function Menu() {
   return (
@@ -52,7 +53,7 @@ export default function TaskList() {
           {tasks.length ? (
             <ScrollView marginBottom={7}>
               {tasks.map(t => (
-                <Text key={t.id}>{t.title}</Text>
+                <TaskComponent key={t.id} task={t} />
               ))}
             </ScrollView>
           ) : (
