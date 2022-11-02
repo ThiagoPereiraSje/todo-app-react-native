@@ -20,7 +20,7 @@ export default class Database {
         });
         console.info('Banco de Dados Aberto com Sucesso!');
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('SQLite Erro: ' + (e.message || e));
     }
   }
@@ -31,7 +31,7 @@ export default class Database {
     try {
       await this.instance.close();
       console.info('Banco de Dados Fechado com Sucesso!');
-    } catch (e) {
+    } catch (e: any) {
       console.error('SQLite Erro: ' + (e.message || e));
     }
   }
@@ -42,7 +42,7 @@ export default class Database {
     try {
       await SQLite.deleteDatabase({name: db_name, location: 'default'});
       console.info('Banco de Dados Excluído com Sucesso!');
-    } catch (e) {
+    } catch (e: any) {
       console.error('SQLite Erro: ' + (e.message || e));
     }
   }
@@ -73,7 +73,7 @@ export default class Database {
       );
 
       console.info('Tabelas criadas com sucesso!');
-    } catch (e) {
+    } catch (e: any) {
       console.error('SQLite Erro: ' + (e.message || e));
     }
   }
@@ -85,7 +85,7 @@ export default class Database {
       await RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8');
 
       console.info('Banco de dados copiado com sucesso!');
-    } catch (e) {
+    } catch (e: any) {
       console.error('SQLite Erro: ' + (e.message || e));
     }
   }
@@ -96,7 +96,7 @@ export default class Database {
       const content = await RNFS.readFile(path, 'utf8');
 
       console.info('conteudo: ', content);
-    } catch (e) {
+    } catch (e: any) {
       console.error('SQLite Erro: ' + (e.message || e));
     }
   }

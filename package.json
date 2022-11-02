@@ -15,6 +15,7 @@
     "native-base": "3.4.0",
     "react": "17.0.1",
     "react-native": "0.64.1",
+    "react-native-background-timer-android": "^1.0.4",
     "react-native-fs": "^2.20.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-sqlite-storage": "^6.0.1",
