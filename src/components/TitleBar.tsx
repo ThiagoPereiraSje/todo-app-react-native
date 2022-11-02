@@ -10,13 +10,13 @@ export default function TitleBar({leftTitle, rightTitle}: TitleBarProps) {
   return (
     <Box
       bgColor="sec.750"
-      p="4px"
+      p="2"
       flexDirection="row"
       justifyContent="space-between">
-      <Text fontWeight="bold" fontSize={13}>
+      <Text fontWeight="bold" fontSize="18">
         {leftTitle}
       </Text>
-      <Text fontWeight="bold" fontSize={13}>
+      <Text fontWeight="bold" fontSize="18">
         {rightTitle}
       </Text>
     </Box>

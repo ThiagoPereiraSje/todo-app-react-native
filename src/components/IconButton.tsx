@@ -2,14 +2,18 @@ import React from 'react';
 import {Icon, IconButton as NBIconButton, IIconButtonProps} from 'native-base';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 
+type IconSize = 'sm' | 'md' | 'lg' | 'xs' | 'xl' | string;
+
 type IconButtonProps = {
   iconName: string;
   color?: string;
+  size?: IconSize;
 } & IIconButtonProps;
 
 export default function IconButton({
   iconName,
   color = 'white',
+  size = 'md',
   ...rest
 }: IconButtonProps) {
   return (
@@ -18,7 +22,7 @@ export default function IconButton({
         <Icon
           as={FaIcon}
           textAlign="center"
-          size="md"
+          size={size}
           name={iconName}
           color={color}
         />

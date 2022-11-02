@@ -7,13 +7,14 @@ import {Routes} from '../../routes';
 
 type TaskProps = {
   task: Task;
+  onPlay: () => void;
 };
 
 function calcPercent(n1: number, n2: number) {
   return ((n1 / n2) * 100).toFixed(0);
 }
 
-export default function index({task}: TaskProps) {
+export default function index({task, onPlay}: TaskProps) {
   const {navigate} = useRouteAction();
 
   const icon =
@@ -51,7 +52,12 @@ export default function index({task}: TaskProps) {
 
       {task.status === 'TODO' ? (
         <>
-          <IconButton key="play" iconName="play" color="white" />
+          <IconButton
+            key="play"
+            iconName="play"
+            color="white"
+            onPress={onPlay}
+          />
         </>
       ) : (
         <>

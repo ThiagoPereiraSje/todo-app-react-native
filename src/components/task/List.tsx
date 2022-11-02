@@ -1,5 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {Box, Text, ScrollView} from 'native-base';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  Box,
+  Text,
+  ScrollView,
+  Modal,
+  Button,
+  StyledProps,
+  Stack,
+} from 'native-base';
+import {Circle} from 'react-native-progress';
 import MenuItem from '../MenuItem';
 import Spinner from '../Spinner';
 
@@ -9,6 +18,12 @@ import TitleBar from '../TitleBar';
 import TaskComponent from './index';
 import {useRouteAction} from '../../contexts/route';
 import {Routes} from '../../routes';
+import {StyleProp, TextStyle} from 'react-native';
+import IconButton from '../IconButton';
+
+const textStyle: StyleProp<TextStyle> = {
+  fontWeight: 'bold',
+};
 
 export function Menu() {
   const {navigate} = useRouteAction();
@@ -28,6 +43,8 @@ export function Menu() {
 }
 
 export default function TaskList() {
+  const _refTask = useRef<Task | undefined>();
+  const [timerModal, setTimerModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [taskStatus] = useState<TaskStatus>('TODO');
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -46,12 +63,48 @@ export default function TaskList() {
     }
   };
 
+  const handlePlay = (task: Task) => {
+    _refTask.current = task;
+    setTimerModal(true);
+  };
+
+  const handleStop = () => {
+    setTimerModal(false);
+  };
+
   useEffect(() => {
     handleLoad(taskStatus);
   }, [taskStatus]);
 
   return (
     <>
+      <Modal isOpen={timerModal} bgColor="rgba(0,0,0,0.6)">
+        <Text style={textStyle} fontSize="3xl">
+          {_refTask.current?.title}
+        </Text>
+        <Text style={textStyle} fontSize="2xl">
+          {_refTask.current?.subtitle}
+        </Text>
+
+        <Box margin="8">
+          <Circle
+            size={250}
+            progress={50 / 100}
+            thickness={20}
+            color="#06b6d4"
+            unfilledColor="#444257"
+            borderWidth={0}
+            showsText
+          />
+        </Box>
+
+        <Stack direction="row" space="8">
+          <IconButton iconName="pause" size="42" />
+          <IconButton iconName="play" size="42" />
+          <IconButton iconName="stop" onPress={handleStop} size="42" />
+        </Stack>
+      </Modal>
+
       {loading ? (
         <Spinner />
       ) : (
@@ -61,7 +114,11 @@ export default function TaskList() {
           {tasks.length ? (
             <ScrollView marginBottom="1" h="full">
               {tasks.map(t => (
-                <TaskComponent key={t.id} task={t} />
+                <TaskComponent
+                  key={t.id}
+                  task={t}
+                  onPlay={() => handlePlay(t)}
+                />
               ))}
             </ScrollView>
           ) : (
