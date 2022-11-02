@@ -13,6 +13,14 @@ export default class TimerService {
     this.final = df;
     this.callback = exec;
 
+    this.play();
+  }
+
+  static pause() {
+    Timer.clearInterval(this._refInteval);
+  }
+
+  static play() {
     this._refInteval = Timer.setInterval(() => {
       if (this.current >= this.final) {
         Timer.clearInterval(this._refInteval);
@@ -21,13 +29,5 @@ export default class TimerService {
 
       this.current += 1;
     }, 1000);
-  }
-
-  static pause() {
-    Timer.clearInterval(this._refInteval);
-  }
-
-  static play() {
-    this.start(this.current, this.final, this.callback);
   }
 }
