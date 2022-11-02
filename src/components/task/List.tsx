@@ -5,7 +5,6 @@ import MenuItem from '../MenuItem';
 import Spinner from '../Spinner';
 
 import Task, {Status as TaskStatus} from '../../entities/task';
-import Timer from '../../services/timer';
 import TaskDAO from '../../services/database/taskDAO';
 import TitleBar from '../TitleBar';
 import TaskComponent from './index';
@@ -13,6 +12,7 @@ import {useRouteAction} from '../../contexts/route';
 import {Routes} from '../../routes';
 import {StyleProp, TextStyle} from 'react-native';
 import IconButton from '../IconButton';
+import {useTimerActions, useTimerState} from '../../contexts/timer';
 
 const textStyle: StyleProp<TextStyle> = {
   fontWeight: 'bold',
@@ -37,11 +37,13 @@ export function Menu() {
 
 export default function TaskList() {
   const _refTask = useRef<Task | undefined>();
-  const [timer, setTimer] = useState(0);
   const [timerModal, setTimerModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [taskStatus] = useState<TaskStatus>('TODO');
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  const {current, final} = useTimerState();
+  const {start, stop} = useTimerActions();
 
   const handleLoad = async (status: TaskStatus) => {
     const order =
@@ -64,19 +66,23 @@ export default function TaskList() {
 
     console.log('play');
 
-    Timer.start(
-      0,
-      runtime,
-      currentTime => setTimer(currentTime),
-      () => console.log('Tempo esgotado!'),
-    );
+    // Timer.start(
+    //   0,
+    //   runtime,
+    //   currentTime => setTimer(currentTime),
+    //   () => console.log('Tempo esgotado!'),
+    // );
+
+    start(0, runtime, () => {
+      console.log('Tempo esgotado!');
+    });
 
     setTimerModal(true);
   };
 
   const handleStop = () => {
     setTimerModal(false);
-    Timer.stop();
+    stop();
   };
 
   useEffect(() => {
@@ -96,7 +102,7 @@ export default function TaskList() {
         <Box margin="8">
           <Circle
             size={250}
-            progress={timer / Timer.final || 1}
+            progress={current / final || 1}
             thickness={20}
             color="#06b6d4"
             unfilledColor="#444257"

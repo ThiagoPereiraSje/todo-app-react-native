@@ -14,14 +14,17 @@ import theme from './src/theme';
 import Navigator from './src/components/Navigator';
 import DrawerProvider from './src/contexts/drawer';
 import RouterProvider from './src/contexts/route';
+import TimerProvider from './src/contexts/timer';
 
 const App = () => {
   return (
     <NativeBaseProvider theme={theme}>
       <DrawerProvider>
         <RouterProvider>
-          <StatusBar hidden />
-          <Navigator />
+          <TimerProvider>
+            <StatusBar hidden />
+            <Navigator />
+          </TimerProvider>
         </RouterProvider>
       </DrawerProvider>
     </NativeBaseProvider>
