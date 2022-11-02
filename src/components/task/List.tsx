@@ -1,18 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  Box,
-  Text,
-  ScrollView,
-  Modal,
-  Button,
-  StyledProps,
-  Stack,
-} from 'native-base';
+import {Box, Text, ScrollView, Modal, Stack} from 'native-base';
 import {Circle} from 'react-native-progress';
 import MenuItem from '../MenuItem';
 import Spinner from '../Spinner';
 
 import Task, {Status as TaskStatus} from '../../entities/task';
+import Timer from '../../services/timer';
 import TaskDAO from '../../services/database/taskDAO';
 import TitleBar from '../TitleBar';
 import TaskComponent from './index';
@@ -44,6 +37,7 @@ export function Menu() {
 
 export default function TaskList() {
   const _refTask = useRef<Task | undefined>();
+  const [timer, setTimer] = useState(0);
   const [timerModal, setTimerModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [taskStatus] = useState<TaskStatus>('TODO');
@@ -65,11 +59,24 @@ export default function TaskList() {
 
   const handlePlay = (task: Task) => {
     _refTask.current = task;
+    const missingTime = task.duration - task.completed_time;
+    const runtime = missingTime < task.runtime ? missingTime : task.runtime;
+
+    console.log('play');
+
+    Timer.start(
+      0,
+      runtime,
+      currentTime => setTimer(currentTime),
+      () => console.log('Tempo esgotado!'),
+    );
+
     setTimerModal(true);
   };
 
   const handleStop = () => {
     setTimerModal(false);
+    Timer.stop();
   };
 
   useEffect(() => {
@@ -89,7 +96,7 @@ export default function TaskList() {
         <Box margin="8">
           <Circle
             size={250}
-            progress={50 / 100}
+            progress={timer / Timer.final || 1}
             thickness={20}
             color="#06b6d4"
             unfilledColor="#444257"
