@@ -33,11 +33,11 @@ export default function TaskForm() {
     setTask({...task, status, fullyCompletedAt});
   };
 
-  const handleReset = () => {
-    setTask(new Task());
-    setDuration('');
-    setRuntime('');
-  };
+  // const handleReset = () => {
+  //   setTask(new Task());
+  //   setDuration('');
+  //   setRuntime('');
+  // };
 
   const handleLoad = async (taskId: number) => {
     const loadedTask = await TaskDAO.get(taskId);
@@ -61,7 +61,7 @@ export default function TaskForm() {
     };
 
     await TaskDAO.save(taskToSave);
-    handleReset();
+    // handleReset();
     goBack();
   };
 

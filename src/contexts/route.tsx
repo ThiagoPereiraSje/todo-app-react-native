@@ -15,7 +15,7 @@ type ChildrenProps = {
 };
 
 type RouteActions = {
-  navigate: (route: number, params: any) => void;
+  navigate: (route: number, params?: any) => void;
   goBack: () => void;
 };
 

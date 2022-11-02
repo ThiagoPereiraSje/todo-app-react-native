@@ -7,12 +7,20 @@ import Task, {Status as TaskStatus} from '../../entities/task';
 import TaskDAO from '../../services/database/taskDAO';
 import TitleBar from '../TitleBar';
 import TaskComponent from './index';
+import {useRouteAction} from '../../contexts/route';
+import {Routes} from '../../routes';
 
 export function Menu() {
+  const {navigate} = useRouteAction();
+
   return (
     <>
       <Box>
-        <MenuItem iconName="plus-square" label="Adicionar tarefa" />
+        <MenuItem
+          iconName="plus-square"
+          label="Adicionar tarefa"
+          onPress={() => navigate(Routes.TaskForm)}
+        />
         <MenuItem iconName="eye" label="Mostrar concluídas" />
       </Box>
     </>

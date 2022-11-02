@@ -2,6 +2,8 @@ import React from 'react';
 import Task from '../../entities/task';
 import {Text, Stack, Progress} from 'native-base';
 import IconButton from '../IconButton';
+import {useRouteAction} from '../../contexts/route';
+import {Routes} from '../../routes';
 
 type TaskProps = {
   task: Task;
@@ -12,10 +14,12 @@ function calcPercent(n1: number, n2: number) {
 }
 
 export default function index({task}: TaskProps) {
+  const {navigate} = useRouteAction();
+
   const icon =
     task.status === 'DONE'
       ? {iconName: 'flag', color: '#10b981'}
-      : {iconName: 'bookmark', color: '#f55'};
+      : {iconName: 'pencil', color: '#f55'};
 
   return (
     <Stack
@@ -27,7 +31,10 @@ export default function index({task}: TaskProps) {
       paddingLeft="3"
       paddingRight="3"
       height="20">
-      <IconButton {...icon} />
+      <IconButton
+        {...icon}
+        onPress={() => navigate(Routes.TaskForm, task.id)}
+      />
       <Stack direction="column" space={0.4} flex={1}>
         <Text fontWeight="bold">{task.title}</Text>
         <Text>{task.subtitle}</Text>
