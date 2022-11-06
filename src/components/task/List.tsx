@@ -75,7 +75,7 @@ export default function TaskList() {
 
       await TaskDAO.save(_refTask.current);
 
-      SoundPlayer.playSoundFile('alarm', 'mp3');
+      SoundPlayer.play();
       setIsPlaying(true);
     });
 
@@ -115,7 +115,7 @@ export default function TaskList() {
       <Modal isOpen={timerModal} bgColor="rgba(0,0,0,0.6)">
         {isPlaying ? (
           <>
-            <Stack direction="column" space="4" justifyContent="center">
+            <Stack direction="column" space="8" alignItems="center">
               <Text style={textStyle} fontSize="3xl">
                 Ciclo Finalizado!
               </Text>
