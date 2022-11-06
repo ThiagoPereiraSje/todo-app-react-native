@@ -15,6 +15,7 @@ import Navigator from './src/components/Navigator';
 import DrawerProvider from './src/contexts/drawer';
 import RouterProvider from './src/contexts/route';
 import TimerProvider from './src/contexts/timer';
+import TaskProvider from './src/contexts/task';
 import Sound from './src/services/sound';
 
 const App = () => {
@@ -29,8 +30,10 @@ const App = () => {
       <DrawerProvider>
         <RouterProvider>
           <TimerProvider>
-            <StatusBar hidden />
-            <Navigator />
+            <TaskProvider>
+              <StatusBar hidden />
+              <Navigator />
+            </TaskProvider>
           </TimerProvider>
         </RouterProvider>
       </DrawerProvider>

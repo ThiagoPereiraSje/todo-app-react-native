@@ -14,6 +14,7 @@ import {StyleProp, TextStyle} from 'react-native';
 import IconButton from '../IconButton';
 import {useTimerActions, useTimerState} from '../../contexts/timer';
 import Sound from '../../services/sound';
+import {useTaskActions, useTaskState} from '../../contexts/task';
 
 const textStyle: StyleProp<TextStyle> = {
   fontWeight: 'bold',
@@ -21,6 +22,12 @@ const textStyle: StyleProp<TextStyle> = {
 
 export function Menu() {
   const {navigate} = useRouteAction();
+  const {status} = useTaskState();
+  const {toggleStatus} = useTaskActions();
+
+  const props = status
+    ? {iconName: 'eye', label: 'Mostrar concluídas'}
+    : {iconName: 'eye-slash', label: 'Mostrar a fazer'};
 
   return (
     <>
@@ -30,7 +37,7 @@ export function Menu() {
           label="Adicionar tarefa"
           onPress={() => navigate(Routes.TaskForm)}
         />
-        <MenuItem iconName="eye" label="Mostrar concluídas" />
+        <MenuItem {...props} onPress={toggleStatus} />
       </Box>
     </>
   );
@@ -42,7 +49,8 @@ export default function TaskList() {
   const [timerStarted, setTimerStarted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [taskStatus] = useState<TaskStatus>('TODO');
+  // const [taskStatus] = useState<TaskStatus>('TODO');
+  const {status} = useTaskState();
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const {current, final} = useTimerState();
@@ -103,12 +111,12 @@ export default function TaskList() {
     setIsPlaying(false);
     setTimerStarted(false);
     setTimerModal(false);
-    handleLoad(taskStatus);
+    handleLoad(status ? 'TODO' : 'DONE');
   };
 
   useEffect(() => {
-    handleLoad(taskStatus);
-  }, [taskStatus]);
+    handleLoad(status ? 'TODO' : 'DONE');
+  }, [status]);
 
   return (
     <>
