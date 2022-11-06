@@ -15,32 +15,24 @@ import Navigator from './src/components/Navigator';
 import DrawerProvider from './src/contexts/drawer';
 import RouterProvider from './src/contexts/route';
 import TimerProvider from './src/contexts/timer';
-import SoundProvider, {useSoundActions} from './src/contexts/sound';
+import Sound from './src/services/sound';
 
 const App = () => {
-  const sound = useSoundActions();
-
   useEffect(() => {
-    if (!sound) {
-      return;
-    }
-
-    sound.init();
+    Sound.init();
 
     return () => {
-      sound.release();
+      Sound.release();
     };
-  }, [sound]);
+  }, []);
 
   return (
     <NativeBaseProvider theme={theme}>
       <DrawerProvider>
         <RouterProvider>
           <TimerProvider>
-            <SoundProvider>
-              <StatusBar />
-              <Navigator />
-            </SoundProvider>
+            <StatusBar />
+            <Navigator />
           </TimerProvider>
         </RouterProvider>
       </DrawerProvider>

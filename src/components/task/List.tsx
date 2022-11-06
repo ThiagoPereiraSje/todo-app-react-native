@@ -13,7 +13,7 @@ import {Routes} from '../../routes';
 import {StyleProp, TextStyle} from 'react-native';
 import IconButton from '../IconButton';
 import {useTimerActions, useTimerState} from '../../contexts/timer';
-import {useSoundActions, useSoundState} from '../../contexts/sound';
+import Sound from '../../services/sound';
 
 const textStyle: StyleProp<TextStyle> = {
   fontWeight: 'bold',
@@ -40,14 +40,13 @@ export default function TaskList() {
   const _refTask = useRef<Task | undefined>();
   const [timerModal, setTimerModal] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [loading, setLoading] = useState(true);
   const [taskStatus] = useState<TaskStatus>('TODO');
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const {current, final} = useTimerState();
   const {start, stop, pause, play} = useTimerActions();
-  const {isPlaying} = useSoundState();
-  const sound = useSoundActions();
 
   const handleLoad = async (status: TaskStatus) => {
     const order =
@@ -76,7 +75,8 @@ export default function TaskList() {
 
       await TaskDAO.save(_refTask.current);
 
-      sound.play();
+      Sound.play();
+      setIsPlaying(true);
     });
 
     setTimerStarted(true);
@@ -99,7 +99,8 @@ export default function TaskList() {
   };
 
   const handleStopSound = () => {
-    sound.stop();
+    Sound.stop();
+    setIsPlaying(false);
     setTimerStarted(false);
     setTimerModal(false);
     handleLoad(taskStatus);
