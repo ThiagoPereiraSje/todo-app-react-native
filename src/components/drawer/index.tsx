@@ -17,7 +17,7 @@ export default function Drawer({menu, children}: DrawerProps) {
   return (
     <DrawerLayoutAndroid
       ref={setDrawer}
-      drawerWidth={200}
+      drawerWidth={300}
       drawerPosition="left"
       drawerLockMode="locked-closed"
       renderNavigationView={() => <NavView content={menu} />}>
