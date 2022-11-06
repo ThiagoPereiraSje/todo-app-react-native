@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import SoundPlayer from 'react-native-sound-player';
 import {Box, Text, ScrollView, Modal, Stack, Pressable} from 'native-base';
 import {Circle} from 'react-native-progress';
 import MenuItem from '../MenuItem';
@@ -13,7 +14,6 @@ import {Routes} from '../../routes';
 import {StyleProp, TextStyle} from 'react-native';
 import IconButton from '../IconButton';
 import {useTimerActions, useTimerState} from '../../contexts/timer';
-import Sound from '../../services/sound';
 
 const textStyle: StyleProp<TextStyle> = {
   fontWeight: 'bold',
@@ -75,7 +75,7 @@ export default function TaskList() {
 
       await TaskDAO.save(_refTask.current);
 
-      Sound.play();
+      SoundPlayer.playSoundFile('alarm', 'mp3');
       setIsPlaying(true);
     });
 
@@ -99,7 +99,7 @@ export default function TaskList() {
   };
 
   const handleStopSound = () => {
-    Sound.stop();
+    SoundPlayer.stop();
     setIsPlaying(false);
     setTimerStarted(false);
     setTimerModal(false);
@@ -115,22 +115,24 @@ export default function TaskList() {
       <Modal isOpen={timerModal} bgColor="rgba(0,0,0,0.6)">
         {isPlaying ? (
           <>
-            <Text style={textStyle} fontSize="2xl">
-              Ciclo Finalizado!
-            </Text>
+            <Stack direction="column" space="4" justifyContent="center">
+              <Text style={textStyle} fontSize="3xl">
+                Ciclo Finalizado!
+              </Text>
 
-            <Text style={textStyle} fontSize="3xl">
-              Parabéns!
-            </Text>
+              <Text style={textStyle} fontSize="3xl">
+                Parabéns!
+              </Text>
 
-            <Pressable
-              onPress={handleStopSound}
-              bgColor="pri.800"
-              _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}
-              p="5"
-              alignItems="center">
-              <Text fontSize="18">Parar Alarm</Text>
-            </Pressable>
+              <Pressable
+                onPress={handleStopSound}
+                bgColor="pri.800"
+                _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}
+                p="5"
+                alignItems="center">
+                <Text fontSize="18">Parar Alarm</Text>
+              </Pressable>
+            </Stack>
           </>
         ) : (
           <>
