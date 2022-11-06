@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Box, Text, ScrollView, Modal, Stack} from 'native-base';
+import {Box, Text, ScrollView, Modal, Stack, Pressable} from 'native-base';
 import {Circle} from 'react-native-progress';
 import MenuItem from '../MenuItem';
 import Spinner from '../Spinner';
@@ -13,6 +13,7 @@ import {Routes} from '../../routes';
 import {StyleProp, TextStyle} from 'react-native';
 import IconButton from '../IconButton';
 import {useTimerActions, useTimerState} from '../../contexts/timer';
+import {useSoundActions, useSoundState} from '../../contexts/sound';
 
 const textStyle: StyleProp<TextStyle> = {
   fontWeight: 'bold',
@@ -45,6 +46,8 @@ export default function TaskList() {
 
   const {current, final} = useTimerState();
   const {start, stop, pause, play} = useTimerActions();
+  const {isPlaying} = useSoundState();
+  const sound = useSoundActions();
 
   const handleLoad = async (status: TaskStatus) => {
     const order =
@@ -73,9 +76,7 @@ export default function TaskList() {
 
       await TaskDAO.save(_refTask.current);
 
-      setTimerStarted(false);
-      setTimerModal(false);
-      handleLoad(taskStatus);
+      sound.play();
     });
 
     setTimerStarted(true);
@@ -97,6 +98,13 @@ export default function TaskList() {
     setTimerStarted(true);
   };
 
+  const handleStopSound = () => {
+    sound.stop();
+    setTimerStarted(false);
+    setTimerModal(false);
+    handleLoad(taskStatus);
+  };
+
   useEffect(() => {
     handleLoad(taskStatus);
   }, [taskStatus]);
@@ -104,33 +112,56 @@ export default function TaskList() {
   return (
     <>
       <Modal isOpen={timerModal} bgColor="rgba(0,0,0,0.6)">
-        <Text style={textStyle} fontSize="3xl">
-          {_refTask.current?.title}
-        </Text>
-        <Text style={textStyle} fontSize="2xl">
-          {_refTask.current?.subtitle}
-        </Text>
+        {isPlaying ? (
+          <>
+            <Text style={textStyle} fontSize="2xl">
+              Ciclo Finalizado!
+            </Text>
 
-        <Box margin="8">
-          <Circle
-            size={250}
-            progress={current / final || 1}
-            thickness={20}
-            color="#06b6d4"
-            unfilledColor="#444257"
-            borderWidth={0}
-            showsText
-          />
-        </Box>
+            <Text style={textStyle} fontSize="3xl">
+              Parabéns!
+            </Text>
 
-        <Stack direction="row" space="8">
-          {timerStarted ? (
-            <IconButton iconName="pause" size="42" onPress={handlePause} />
-          ) : (
-            <IconButton iconName="play" size="42" onPress={handlePlay} />
-          )}
-          <IconButton iconName="stop" size="42" onPress={handleStop} />
-        </Stack>
+            <Pressable
+              onPress={handleStopSound}
+              bgColor="pri.800"
+              _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}
+              p="5"
+              alignItems="center">
+              <Text fontSize="18">Parar Alarm</Text>
+            </Pressable>
+          </>
+        ) : (
+          <>
+            <Text style={textStyle} fontSize="3xl">
+              {_refTask.current?.title}
+            </Text>
+            <Text style={textStyle} fontSize="2xl">
+              {_refTask.current?.subtitle}
+            </Text>
+
+            <Box margin="8">
+              <Circle
+                size={250}
+                progress={current / final || 1}
+                thickness={20}
+                color="#06b6d4"
+                unfilledColor="#444257"
+                borderWidth={0}
+                showsText
+              />
+            </Box>
+
+            <Stack direction="row" space="8">
+              {timerStarted ? (
+                <IconButton iconName="pause" size="42" onPress={handlePause} />
+              ) : (
+                <IconButton iconName="play" size="42" onPress={handlePlay} />
+              )}
+              <IconButton iconName="stop" size="42" onPress={handleStop} />
+            </Stack>
+          </>
+        )}
       </Modal>
 
       {loading ? (

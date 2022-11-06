@@ -8,9 +8,8 @@ import React, {
   ReactNode,
 } from 'react';
 
-const sound: RNSound = new RNSound(require('./alarm.mp3'));
-
 type SoundActions = {
+  init: () => void;
   play: () => void;
   stop: () => void;
   release: () => void;
@@ -37,13 +36,17 @@ type SoundProviderProps = {
   children: ReactNode;
 };
 
-export default function RouterProvider({children}: SoundProviderProps) {
+export default function SoundProvider({children}: SoundProviderProps) {
+  const [sound, setSound] = useState<RNSound>();
   const [isPlaying, setIsPlaying] = useState(false);
 
   const state: SoundState = useMemo(() => ({isPlaying}), [isPlaying]);
 
   const actions: SoundActions = useMemo(
     () => ({
+      init: () => {
+        setSound(new RNSound(require('./alarm.mp3')));
+      },
       play: () => {
         sound.play();
         setIsPlaying(true);
@@ -56,7 +59,7 @@ export default function RouterProvider({children}: SoundProviderProps) {
         sound.release();
       },
     }),
-    [],
+    [isPlaying],
   );
 
   return (

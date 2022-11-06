@@ -8,22 +8,39 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import theme from './src/theme';
 import Navigator from './src/components/Navigator';
 import DrawerProvider from './src/contexts/drawer';
 import RouterProvider from './src/contexts/route';
 import TimerProvider from './src/contexts/timer';
+import SoundProvider, {useSoundActions} from './src/contexts/sound';
 
 const App = () => {
+  const sound = useSoundActions();
+
+  useEffect(() => {
+    if (!sound) {
+      return;
+    }
+
+    sound.init();
+
+    return () => {
+      sound.release();
+    };
+  }, [sound]);
+
   return (
     <NativeBaseProvider theme={theme}>
       <DrawerProvider>
         <RouterProvider>
           <TimerProvider>
-            <StatusBar hidden />
-            <Navigator />
+            <SoundProvider>
+              <StatusBar />
+              <Navigator />
+            </SoundProvider>
           </TimerProvider>
         </RouterProvider>
       </DrawerProvider>
