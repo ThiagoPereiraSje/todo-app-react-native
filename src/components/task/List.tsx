@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useRef} from 'react';
-import SoundPlayer from 'react-native-sound-player';
 import {Box, Text, ScrollView, Modal, Stack, Pressable} from 'native-base';
 import {Circle} from 'react-native-progress';
 import MenuItem from '../MenuItem';
@@ -14,6 +13,7 @@ import {Routes} from '../../routes';
 import {StyleProp, TextStyle} from 'react-native';
 import IconButton from '../IconButton';
 import {useTimerActions, useTimerState} from '../../contexts/timer';
+import Sound from '../../services/sound';
 
 const textStyle: StyleProp<TextStyle> = {
   fontWeight: 'bold',
@@ -75,7 +75,7 @@ export default function TaskList() {
 
       await TaskDAO.save(_refTask.current);
 
-      SoundPlayer.play();
+      Sound.play();
       setIsPlaying(true);
     });
 
@@ -99,7 +99,7 @@ export default function TaskList() {
   };
 
   const handleStopSound = () => {
-    SoundPlayer.stop();
+    Sound.stop();
     setIsPlaying(false);
     setTimerStarted(false);
     setTimerModal(false);
@@ -117,7 +117,7 @@ export default function TaskList() {
           <>
             <Stack direction="column" space="8" alignItems="center">
               <Text style={textStyle} fontSize="3xl">
-                Ciclo Finalizado!
+                Ciclo finalizado com sucesso!
               </Text>
 
               <Text style={textStyle} fontSize="3xl">
@@ -130,7 +130,7 @@ export default function TaskList() {
                 _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}
                 p="5"
                 alignItems="center">
-                <Text fontSize="18">Parar Alarm</Text>
+                <Text fontSize="18">Parar Alarme</Text>
               </Pressable>
             </Stack>
           </>

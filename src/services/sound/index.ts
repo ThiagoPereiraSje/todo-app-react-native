@@ -1,11 +1,17 @@
-import SoundPlayer from 'react-native-sound-player';
+import RNSound from 'react-native-sound';
 
-export default class Sound {
-  static play() {
-    SoundPlayer.playSoundFile('alarm', 'mp3');
-  }
+RNSound.setCategory('Playback');
 
-  static stop() {
-    SoundPlayer.stop();
+const Sound = new RNSound('alarm.mp3', RNSound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound', error);
+    return;
   }
-}
+  // when loaded successfully
+  console.log('Som carregado com sucesso!');
+});
+
+Sound.setVolume(1);
+Sound.setNumberOfLoops(-1);
+
+export default Sound;

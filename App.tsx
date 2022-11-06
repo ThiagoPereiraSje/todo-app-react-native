@@ -8,27 +8,28 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import theme from './src/theme';
 import Navigator from './src/components/Navigator';
 import DrawerProvider from './src/contexts/drawer';
 import RouterProvider from './src/contexts/route';
 import TimerProvider from './src/contexts/timer';
-
-import SoundPlayer from 'react-native-sound-player';
+import Sound from './src/services/sound';
 
 const App = () => {
-  SoundPlayer.loadSoundFile('alarm', 'mp3');
-  // SoundPlayer.setNumberOfLoops(-1);
-  SoundPlayer.setVolume(10);
+  useEffect(() => {
+    return () => {
+      Sound.release();
+    };
+  }, []);
 
   return (
     <NativeBaseProvider theme={theme}>
       <DrawerProvider>
         <RouterProvider>
           <TimerProvider>
-            <StatusBar />
+            <StatusBar hidden />
             <Navigator />
           </TimerProvider>
         </RouterProvider>
