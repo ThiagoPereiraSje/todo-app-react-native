@@ -20,7 +20,7 @@ export default function MenuItem({
       _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}>
       <Stack direction="row" space="3" p="5" alignItems="center">
         <Icon as={FaIcon} name={iconName} size="lg" />
-        <Text>{label}</Text>
+        <Text fontSize="18">{label}</Text>
       </Stack>
     </Pressable>
   );

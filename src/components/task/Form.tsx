@@ -66,7 +66,7 @@ export default function TaskForm() {
 
   return (
     <>
-      <TitleBar leftTitle="Nova Tarefa" />
+      <TitleBar leftTitle={!task.id ? 'Nova Tarefa' : 'Editar Tarefa'} />
 
       <VStack padding="10px" space={8}>
         <Input
