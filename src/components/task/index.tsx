@@ -34,11 +34,14 @@ export default function index({task, onPlay}: TaskProps) {
       height="20">
       <IconButton
         {...icon}
+        size="8"
         onPress={() => navigate(Routes.TaskForm, task.id)}
       />
       <Stack direction="column" space={0.4} flex={1}>
-        <Text fontWeight="bold">{task.title}</Text>
-        <Text>{task.subtitle}</Text>
+        <Text fontWeight="bold" fontSize="20">
+          {task.title}
+        </Text>
+        <Text fontSize="16">{task.subtitle}</Text>
       </Stack>
       <Progress
         size="xl"
@@ -56,6 +59,7 @@ export default function index({task, onPlay}: TaskProps) {
             key="play"
             iconName="play"
             color="white"
+            size="8"
             onPress={onPlay}
           />
         </>

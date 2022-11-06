@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon, Pressable, Text} from 'native-base';
+import {Icon, Pressable, Stack, Text} from 'native-base';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 
 type MenuItemProps = {
@@ -16,19 +16,12 @@ export default function MenuItem({
   return (
     <Pressable
       onPress={onPress}
-      _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}
-      flexDirection="row"
-      alignItems="center"
-      p="8px">
-      <Icon
-        as={FaIcon}
-        size={6}
-        textAlign="center"
-        name={iconName}
-        marginRight="8px"
-      />
-
-      <Text>{label}</Text>
+      bgColor="pri.800"
+      _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}>
+      <Stack direction="row" space="3" p="5" alignItems="center">
+        <Icon as={FaIcon} name={iconName} size="lg" />
+        <Text>{label}</Text>
+      </Stack>
     </Pressable>
   );
 }

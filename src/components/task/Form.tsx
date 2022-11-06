@@ -33,12 +33,6 @@ export default function TaskForm() {
     setTask({...task, status, fullyCompletedAt});
   };
 
-  // const handleReset = () => {
-  //   setTask(new Task());
-  //   setDuration('');
-  //   setRuntime('');
-  // };
-
   const handleLoad = async (taskId: number) => {
     const loadedTask = await TaskDAO.get(taskId);
     const loadedDuration = moment
@@ -61,7 +55,6 @@ export default function TaskForm() {
     };
 
     await TaskDAO.save(taskToSave);
-    // handleReset();
     goBack();
   };
 
@@ -81,6 +74,7 @@ export default function TaskForm() {
           type="text"
           paddingLeft="3"
           placeholder="Título"
+          fontSize="16"
           value={task.title}
           onChangeText={title => setTask({...task, title})}
         />
@@ -90,6 +84,7 @@ export default function TaskForm() {
           type="text"
           paddingLeft="3"
           placeholder="Subtítulo"
+          fontSize="16"
           value={task.subtitle}
           onChangeText={subtitle => setTask({...task, subtitle})}
         />
@@ -98,6 +93,7 @@ export default function TaskForm() {
           variant="underlined"
           type="text"
           paddingLeft="3"
+          fontSize="16"
           keyboardType="numeric"
           maxLength={8}
           placeholder="Duração"
@@ -112,6 +108,7 @@ export default function TaskForm() {
           variant="underlined"
           type="text"
           paddingLeft="3"
+          fontSize="16"
           keyboardType="numeric"
           maxLength={8}
           placeholder="Tempo de Execução"
@@ -127,6 +124,7 @@ export default function TaskForm() {
           borderTopWidth={0}
           borderRightWidth={0}
           borderBottomWidth={2}
+          fontSize="16"
           selectedValue={task.status}
           onValueChange={setStatus}>
           <Select.Item label="A Fazer" value="TODO" />
@@ -135,8 +133,9 @@ export default function TaskForm() {
 
         <Button
           marginTop="5"
-          bgColor="cyan.700"
-          _pressed={{bgColor: 'cyan.800'}}
+          bgColor="fourth.700"
+          p="4"
+          _pressed={{bgColor: 'fourth.800'}}
           _text={{fontWeight: 'bold'}}
           leftIcon={<Icon as={MtIcon} name="save" />}
           disabled={isInvalidTask()}

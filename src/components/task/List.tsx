@@ -25,7 +25,7 @@ export function Menu() {
     <>
       <Box>
         <MenuItem
-          iconName="plus-square"
+          iconName="plus"
           label="Adicionar tarefa"
           onPress={() => navigate(Routes.TaskForm)}
         />
