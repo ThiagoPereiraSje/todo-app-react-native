@@ -9,7 +9,7 @@ import React, {
 
 import Timer from 'react-native-background-timer-android';
 
-type Callback = () => void;
+type Callback = (time: number) => void;
 
 type TimerState = {
   current: number;
@@ -58,11 +58,10 @@ export default function TimerProvider({children}: TimerProviderProps) {
     refInterval.current = Timer.setInterval(() => {
       if (refCurrent.current >= refFinal.current) {
         Timer.clearInterval(refInterval.current);
-        refCallback.current();
+        refCallback.current(refCurrent.current);
       }
 
       refCurrent.current += 1;
-      console.log('current: ', refCurrent.current);
       setCurrent(refCurrent.current);
     }, 1000);
   };

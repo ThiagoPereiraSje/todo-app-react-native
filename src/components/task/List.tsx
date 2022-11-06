@@ -38,12 +38,13 @@ export function Menu() {
 export default function TaskList() {
   const _refTask = useRef<Task | undefined>();
   const [timerModal, setTimerModal] = useState(false);
+  const [timerStarted, setTimerStarted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [taskStatus] = useState<TaskStatus>('TODO');
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const {current, final} = useTimerState();
-  const {start, stop} = useTimerActions();
+  const {start, stop, pause, play} = useTimerActions();
 
   const handleLoad = async (status: TaskStatus) => {
     const order =
@@ -59,30 +60,41 @@ export default function TaskList() {
     }
   };
 
-  const handlePlay = (task: Task) => {
+  const handleStart = (task: Task) => {
     _refTask.current = task;
     const missingTime = task.duration - task.completed_time;
     const runtime = missingTime < task.runtime ? missingTime : task.runtime;
 
-    console.log('play');
+    start(0, runtime, async time => {
+      _refTask.current.completed_time =
+        (_refTask.current.completed_time || 0) + time;
 
-    // Timer.start(
-    //   0,
-    //   runtime,
-    //   currentTime => setTimer(currentTime),
-    //   () => console.log('Tempo esgotado!'),
-    // );
+      console.log({completed_time: _refTask.current.completed_time});
 
-    start(0, runtime, () => {
-      console.log('Tempo esgotado!');
+      await TaskDAO.save(_refTask.current);
+
+      setTimerStarted(false);
+      setTimerModal(false);
+      handleLoad(taskStatus);
     });
 
+    setTimerStarted(true);
     setTimerModal(true);
   };
 
   const handleStop = () => {
     setTimerModal(false);
     stop();
+  };
+
+  const handlePause = () => {
+    pause();
+    setTimerStarted(false);
+  };
+
+  const handlePlay = () => {
+    play();
+    setTimerStarted(true);
   };
 
   useEffect(() => {
@@ -112,9 +124,12 @@ export default function TaskList() {
         </Box>
 
         <Stack direction="row" space="8">
-          <IconButton iconName="pause" size="42" />
-          <IconButton iconName="play" size="42" />
-          <IconButton iconName="stop" onPress={handleStop} size="42" />
+          {timerStarted ? (
+            <IconButton iconName="pause" size="42" onPress={handlePause} />
+          ) : (
+            <IconButton iconName="play" size="42" onPress={handlePlay} />
+          )}
+          <IconButton iconName="stop" size="42" onPress={handleStop} />
         </Stack>
       </Modal>
 
@@ -130,7 +145,7 @@ export default function TaskList() {
                 <TaskComponent
                   key={t.id}
                   task={t}
-                  onPlay={() => handlePlay(t)}
+                  onPlay={() => handleStart(t)}
                 />
               ))}
             </ScrollView>
