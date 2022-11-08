@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
-import 'moment-duration-format';
+import {fromS} from 'hh-mm-ss';
 import TitleBar from '../TitleBar';
-import {Input, VStack, Select, Button, Icon} from 'native-base';
-import MtIcon from 'react-native-vector-icons/MaterialIcons';
+import {Input, Stack, Select, Box} from 'native-base';
 import InputMask from '../InputMask';
 import Task, {Status} from '../../entities/task';
 import TaskDAO from '../../services/database/taskDAO';
 import {useRouteAction, useRouteState} from '../../contexts/route';
+import IconButton from '../IconButton';
 
 export default function TaskForm() {
   const [task, setTask] = useState<Task>(new Task());
@@ -35,12 +35,8 @@ export default function TaskForm() {
 
   const handleLoad = async (taskId: number) => {
     const loadedTask = await TaskDAO.get(taskId);
-    const loadedDuration = moment
-      .duration(loadedTask.duration, 'seconds')
-      .format('hh:mm:ss');
-    const loadedRuntime = moment
-      .duration(loadedTask.runtime, 'seconds')
-      .format('hh:mm:ss');
+    const loadedDuration = fromS(loadedTask.duration, 'hh:mm:ss');
+    const loadedRuntime = fromS(loadedTask.runtime, 'hh:mm:ss');
 
     setTask(loadedTask);
     setDuration(loadedDuration);
@@ -68,7 +64,7 @@ export default function TaskForm() {
     <>
       <TitleBar leftTitle={!task.id ? 'Nova Tarefa' : 'Editar Tarefa'} />
 
-      <VStack padding="10px" space={8}>
+      <Stack direction="column" padding="8" space={8}>
         <Input
           variant="underlined"
           type="text"
@@ -131,18 +127,25 @@ export default function TaskForm() {
           <Select.Item label="Concluída" value="DONE" />
         </Select>
 
-        <Button
-          marginTop="5"
-          bgColor="fourth.700"
-          p="4"
-          _pressed={{bgColor: 'fourth.800'}}
-          _text={{fontWeight: 'bold'}}
-          leftIcon={<Icon as={MtIcon} name="save" />}
-          disabled={isInvalidTask()}
-          onPress={handleSubmit}>
-          SALVAR
-        </Button>
-      </VStack>
+        <Box alignItems="center" marginTop="1/6">
+          <Box flexDirection="row" justifyContent="space-between" w="1/2">
+            <IconButton iconName="trash" size="54" color="danger.400" />
+            <IconButton
+              iconName="rotate-left"
+              size="54"
+              disabled={task.completed_time === 0}
+              onPress={() => setTask({...task, completed_time: 0})}
+            />
+            <IconButton
+              iconName="save"
+              size="54"
+              color="fourth.400"
+              disabled={isInvalidTask()}
+              onPress={handleSubmit}
+            />
+          </Box>
+        </Box>
+      </Stack>
     </>
   );
 }

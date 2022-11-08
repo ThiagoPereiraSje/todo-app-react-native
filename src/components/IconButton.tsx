@@ -14,6 +14,7 @@ export default function IconButton({
   iconName,
   color = 'white',
   size = 'md',
+  disabled,
   ...rest
 }: IconButtonProps) {
   return (
@@ -24,12 +25,12 @@ export default function IconButton({
           textAlign="center"
           size={size}
           name={iconName}
-          color={color}
+          color={disabled ? 'gray.500' : color}
         />
       }
       borderRadius="full"
       size="lg"
-      bgColor="rgba(0,0,0,0.4)"
+      bgColor={disabled ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.4)'}
       _pressed={{bgColor: 'rgba(0,0,0,0.6)'}}
       textAlign="center"
       {...rest}
