@@ -54,6 +54,11 @@ export default function TaskForm() {
     goBack();
   };
 
+  const handleDelete = async () => {
+    await TaskDAO.delete(task.id);
+    goBack();
+  };
+
   useEffect(() => {
     if (typeof params === 'number') {
       handleLoad(Number(params));
@@ -129,7 +134,13 @@ export default function TaskForm() {
 
         <Box alignItems="center" marginTop="1/6">
           <Box flexDirection="row" justifyContent="space-between" w="1/2">
-            <IconButton iconName="trash" size="54" color="danger.400" />
+            <IconButton
+              iconName="trash"
+              size="54"
+              color="danger.400"
+              disabled={!task.id}
+              onPress={handleDelete}
+            />
             <IconButton
               iconName="rotate-left"
               size="54"
