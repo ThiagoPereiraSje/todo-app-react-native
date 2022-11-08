@@ -34,7 +34,7 @@ export default function index({task, onPlay}: TaskProps) {
       height="20">
       <IconButton
         {...icon}
-        size="8"
+        size="46"
         onPress={() => navigate(Routes.TaskForm, task.id)}
       />
       <Stack direction="column" space={0.4} flex={1}>
@@ -56,19 +56,15 @@ export default function index({task, onPlay}: TaskProps) {
         task.duration,
       )} %`}</Text>
 
-      {task.status === 'TODO' ? (
+      {task.status === 'TODO' && (
         <>
           <IconButton
             key="play"
             iconName="play"
             color="white"
-            size="8"
+            size="46"
             onPress={onPlay}
           />
-        </>
-      ) : (
-        <>
-          <IconButton key="reset" iconName="rotate-left" color="white" />
         </>
       )}
     </Stack>

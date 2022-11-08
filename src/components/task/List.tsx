@@ -26,15 +26,15 @@ export function Menu() {
   const {toggleStatus} = useTaskActions();
 
   const props = status
-    ? {iconName: 'eye', label: 'Mostrar concluídas'}
-    : {iconName: 'eye-slash', label: 'Mostrar a fazer'};
+    ? {iconName: 'eye', label: 'Mostrar a Fazer'}
+    : {iconName: 'eye-slash', label: 'Mostrar Concluídas'};
 
   return (
     <>
       <Box>
         <MenuItem
           iconName="plus"
-          label="Adicionar tarefa"
+          label="Adicionar Tarefa"
           onPress={() => navigate(Routes.TaskForm)}
         />
         <MenuItem {...props} onPress={toggleStatus} />
@@ -49,7 +49,6 @@ export default function TaskList() {
   const [timerStarted, setTimerStarted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [loading, setLoading] = useState(true);
-  // const [taskStatus] = useState<TaskStatus>('TODO');
   const {status} = useTaskState();
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -78,8 +77,6 @@ export default function TaskList() {
     start(0, runtime, async time => {
       _refTask.current.completed_time =
         (_refTask.current.completed_time || 0) + time;
-
-      console.log({completed_time: _refTask.current.completed_time});
 
       await TaskDAO.save(_refTask.current);
 

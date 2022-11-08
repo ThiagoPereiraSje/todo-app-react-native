@@ -10,7 +10,7 @@ type DrawerProps = {
 };
 
 export default function Drawer({menu, children}: DrawerProps) {
-  const buttonSize = '20';
+  const buttonSize = '88';
   const {setDrawer, openDrawer} = useDrawerActions();
   const {disabled} = useDrawerState();
 
@@ -31,12 +31,12 @@ export default function Drawer({menu, children}: DrawerProps) {
         justifyContent="center"
         alignItems="flex-end"
         paddingRight="1"
-        bgColor="rgba(0,0,0,0.4)"
+        bgColor="rgba(0,0,0,0.2)"
         _pressed={{bgColor: 'rgba(0,0,0,0.5)'}}
         opacity={disabled ? 0.2 : 1}
         position="absolute"
         top="2/5"
-        left="-50"
+        left="-58"
         onPress={openDrawer}>
         <ChevronRightIcon color="white" size="sm" />
       </Pressable>
