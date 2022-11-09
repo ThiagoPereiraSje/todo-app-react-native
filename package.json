@@ -10,6 +10,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.0.0",
     "hh-mm-ss": "^1.2.0",
     "moment": "^2.29.4",
     "native-base": "3.4.0",
