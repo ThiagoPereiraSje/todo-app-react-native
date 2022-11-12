@@ -1,11 +1,14 @@
+import Config from 'react-native-config';
 import {GraphQLClient} from 'graphql-request';
 
-const ENDPOINT = '';
-const TOKEN = '';
+const DIRECTUS_ENDPOINT = Config.DIRECTUS_ENDPOINT;
+const DIRECTUS_TOKEN = Config.DIRECTUS_TOKEN;
 
-const client = new GraphQLClient(ENDPOINT, {
+console.log({DIRECTUS_ENDPOINT, DIRECTUS_TOKEN});
+
+const client = new GraphQLClient(DIRECTUS_ENDPOINT, {
   headers: {
-    authorization: `Bearer ${TOKEN}`,
+    authorization: `Bearer ${DIRECTUS_TOKEN}`,
   },
 });
 
