@@ -15,6 +15,10 @@ export type QueryTasks = {
   tasks: Task[];
 };
 
+export type QueryTaskById = {
+  task: Task;
+};
+
 export type CreateTask = {
   input: Omit<Task, 'id'>;
 };

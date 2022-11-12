@@ -4,13 +4,25 @@ import {fromS} from 'hh-mm-ss';
 import TitleBar from '../TitleBar';
 import {Input, Stack, Select, Box} from 'native-base';
 import InputMask from '../InputMask';
-import Task, {Status} from '../../entities/task';
-import TaskDAO from '../../services/database/taskDAO';
+
+import client from '../../graphql/client';
+import {TASK_BY_ID, CREATE_TASK, DELETE_TASK} from '../../graphql/queries';
+import {
+  QueryTaskById,
+  CreateTask,
+  DeleteTask,
+  Task,
+  Status,
+} from '../../graphql/types';
+
+// import Task, {Status} from '../../entities/task';
+// import TaskDAO from '../../services/database/taskDAO';
+
 import {useRouteAction, useRouteState} from '../../contexts/route';
 import IconButton from '../IconButton';
 
 export default function TaskForm() {
-  const [task, setTask] = useState<Task>(new Task());
+  const [task, setTask] = useState<Task>({} as Task);
   const [duration, setDuration] = useState('');
   const [runtime, setRuntime] = useState('');
   const {goBack} = useRouteAction();
@@ -33,10 +45,14 @@ export default function TaskForm() {
     setTask({...task, status, fullyCompletedAt});
   };
 
-  const handleLoad = async (taskId: number) => {
-    const loadedTask = await TaskDAO.get(taskId);
-    const loadedDuration = fromS(loadedTask.duration, 'hh:mm:ss');
-    const loadedRuntime = fromS(loadedTask.runtime, 'hh:mm:ss');
+  const handleLoad = async (taskId: string) => {
+    const result = await client.request<QueryTaskById, Pick<Task, 'id'>>(
+      TASK_BY_ID,
+      {id: taskId},
+    );
+    const loadedTask = result.task || ({} as Task);
+    const loadedDuration = fromS(loadedTask?.duration || 0, 'hh:mm:ss');
+    const loadedRuntime = fromS(loadedTask?.runtime || 0, 'hh:mm:ss');
 
     setTask(loadedTask);
     setDuration(loadedDuration);
@@ -50,24 +66,28 @@ export default function TaskForm() {
       runtime: moment.duration(runtime).asSeconds(),
     };
 
-    await TaskDAO.save(taskToSave);
+    // await TaskDAO.save(taskToSave);
+    await client.request<Task, CreateTask>(CREATE_TASK, {input: taskToSave});
     goBack();
   };
 
   const handleDelete = async () => {
-    await TaskDAO.delete(task.id);
+    // await TaskDAO.delete(task.id);
+    await client.request<Pick<Task, 'id'>, DeleteTask>(DELETE_TASK, {
+      id: task.id,
+    });
     goBack();
   };
 
   useEffect(() => {
     if (typeof params === 'number') {
-      handleLoad(Number(params));
+      handleLoad(String(params));
     }
   }, [params]);
 
   return (
     <>
-      <TitleBar leftTitle={!task.id ? 'Nova Tarefa' : 'Editar Tarefa'} />
+      <TitleBar leftTitle={!task?.id ? 'Nova Tarefa' : 'Editar Tarefa'} />
 
       <Stack direction="column" padding="8" space={8}>
         <Input
@@ -76,7 +96,7 @@ export default function TaskForm() {
           paddingLeft="3"
           placeholder="Título"
           fontSize="16"
-          value={task.title}
+          value={task?.title}
           onChangeText={title => setTask({...task, title})}
         />
 
@@ -86,7 +106,7 @@ export default function TaskForm() {
           paddingLeft="3"
           placeholder="Subtítulo"
           fontSize="16"
-          value={task.subtitle}
+          value={task?.subtitle}
           onChangeText={subtitle => setTask({...task, subtitle})}
         />
 
@@ -126,7 +146,7 @@ export default function TaskForm() {
           borderRightWidth={0}
           borderBottomWidth={2}
           fontSize="16"
-          selectedValue={task.status}
+          selectedValue={task?.status}
           onValueChange={setStatus}>
           <Select.Item label="A Fazer" value="TODO" />
           <Select.Item label="Concluída" value="DONE" />
@@ -138,13 +158,13 @@ export default function TaskForm() {
               iconName="trash"
               size="54"
               color="danger.400"
-              disabled={!task.id}
+              disabled={!task?.id}
               onPress={handleDelete}
             />
             <IconButton
               iconName="rotate-left"
               size="54"
-              disabled={task.completed_time === 0}
+              disabled={task?.completed_time === 0}
               onPress={() => setTask({...task, completed_time: 0})}
             />
             <IconButton

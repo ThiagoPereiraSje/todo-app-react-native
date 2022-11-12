@@ -15,6 +15,21 @@ export const FILTER_TASKS = gql`
   }
 `;
 
+export const TASK_BY_ID = gql`
+  query task_by_id($id: ID!) {
+    task: tasks_by_id(id: $id) {
+      id
+      title
+      subtitle
+      duration
+      runtime
+      completed_time
+      status
+      fullyCompletedAt
+    }
+  }
+`;
+
 export const CREATE_TASK = gql`
   mutation create_task($input: create_tasks_input!) {
     task: create_tasks_item(data: $input) {
