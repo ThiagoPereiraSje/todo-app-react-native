@@ -4,8 +4,6 @@ import {GraphQLClient} from 'graphql-request';
 const DIRECTUS_ENDPOINT = Config.DIRECTUS_ENDPOINT;
 const DIRECTUS_TOKEN = Config.DIRECTUS_TOKEN;
 
-console.log({DIRECTUS_ENDPOINT, DIRECTUS_TOKEN});
-
 const client = new GraphQLClient(DIRECTUS_ENDPOINT, {
   headers: {
     authorization: `Bearer ${DIRECTUS_TOKEN}`,

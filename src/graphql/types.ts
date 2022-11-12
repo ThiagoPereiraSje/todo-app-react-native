@@ -9,7 +9,7 @@ export type Task = {
   fullyCompletedAt: number;
 };
 
-export type QueryTask = {
+export type QueryTasks = {
   tasks: Task[];
 };
 
