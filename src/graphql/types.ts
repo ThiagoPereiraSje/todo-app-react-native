@@ -1,5 +1,7 @@
+export type Status = 'TODO' | 'DONE';
+
 export type Task = {
-  id?: string;
+  id: string;
   subtitle: string;
   title: string;
   duration: number;
@@ -14,12 +16,12 @@ export type QueryTasks = {
 };
 
 export type CreateTask = {
-  input: Task;
+  input: Omit<Task, 'id'>;
 };
 
 export type UpdateTask = {
   id: string;
-  input: Task;
+  input: Omit<Task, 'id'>;
 };
 
 export type DeleteTask = {

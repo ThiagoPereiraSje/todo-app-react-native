@@ -1,5 +1,5 @@
 import React from 'react';
-import Task from '../../entities/task';
+import {Task} from '../../graphql/types';
 import {Text, Stack, Progress} from 'native-base';
 import IconButton from '../IconButton';
 import {useRouteAction} from '../../contexts/route';

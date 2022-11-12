@@ -5,11 +5,14 @@ import MenuItem from '../MenuItem';
 import Spinner from '../Spinner';
 
 import client from '../../graphql/client';
-import {FILTER_TASKS} from '../../graphql/queries';
-import {QueryTasks} from '../../graphql/types';
+import {FILTER_TASKS, UPDATE_TASK} from '../../graphql/queries';
+import {
+  QueryTasks,
+  UpdateTask,
+  Task,
+  Status as TaskStatus,
+} from '../../graphql/types';
 
-import Task, {Status as TaskStatus} from '../../entities/task';
-import TaskDAO from '../../services/database/taskDAO';
 import TitleBar from '../TitleBar';
 import TaskComponent from './index';
 import {useRouteAction} from '../../contexts/route';
@@ -59,32 +62,24 @@ export default function TaskList() {
   const {current, final} = useTimerState();
   const {start, stop, pause, play} = useTimerActions();
 
-  // const handleLoad = async (status: TaskStatus) => {
-  //   const order =
-  //     status === 'TODO'
-  //       ? ' ORDER BY completed_time ASC LIMIT 50 '
-  //       : ' ORDER BY fullyCompletedAt DESC LIMIT 50 ';
+  const handleLoad = async (status: TaskStatus) => {
+    const sort = status === 'TODO' ? ['completed_time'] : ['-fullyCompletedAt'];
 
-  //   const newTasks = await TaskDAO.list(` WHERE status = ? ${order}`, [status]);
-
-  //   if (tasks) {
-  //     setTasks(newTasks);
-  //     setLoading(false);
-  //   }
-  // };
-
-  const handleLoad2 = async (status: TaskStatus) => {
     const variables = {
       filter: {
         status: {
-          _eq: 'TODO',
+          _eq: status,
         },
       },
-      sort: ['completed_time'],
+      sort,
     };
 
     const result = await client.request<QueryTasks>(FILTER_TASKS, variables);
-    console.log({result});
+
+    if (result.tasks) {
+      setTasks(result.tasks);
+      setLoading(false);
+    }
   };
 
   const handleStart = (task: Task) => {
@@ -96,7 +91,10 @@ export default function TaskList() {
       _refTask.current.completed_time =
         (_refTask.current.completed_time || 0) + time;
 
-      await TaskDAO.save(_refTask.current);
+      await client.request<Task, UpdateTask>(UPDATE_TASK, {
+        id: _refTask.current.id,
+        input: _refTask.current,
+      });
 
       Sound.play();
       setIsPlaying(true);
@@ -126,11 +124,11 @@ export default function TaskList() {
     setIsPlaying(false);
     setTimerStarted(false);
     setTimerModal(false);
-    handleLoad2(status ? 'TODO' : 'DONE');
+    handleLoad(status ? 'TODO' : 'DONE');
   };
 
   useEffect(() => {
-    handleLoad2(status ? 'TODO' : 'DONE');
+    handleLoad(status ? 'TODO' : 'DONE');
   }, [status]);
 
   return (
