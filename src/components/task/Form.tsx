@@ -6,17 +6,20 @@ import {Input, Stack, Select, Box} from 'native-base';
 import InputMask from '../InputMask';
 
 import client from '../../graphql/client';
-import {TASK_BY_ID, CREATE_TASK, DELETE_TASK} from '../../graphql/queries';
+import {
+  TASK_BY_ID,
+  CREATE_TASK,
+  UPDATE_TASK,
+  DELETE_TASK,
+} from '../../graphql/queries';
 import {
   QueryTaskById,
   CreateTask,
+  UpdateTask,
   DeleteTask,
   Task,
   Status,
 } from '../../graphql/types';
-
-// import Task, {Status} from '../../entities/task';
-// import TaskDAO from '../../services/database/taskDAO';
 
 import {useRouteAction, useRouteState} from '../../contexts/route';
 import IconButton from '../IconButton';
@@ -76,13 +79,19 @@ export default function TaskForm() {
       runtime: String(moment.duration(runtime).asSeconds()),
     };
 
-    // await TaskDAO.save(taskToSave);
-    await client.request<Task, CreateTask>(CREATE_TASK, {input: taskToSave});
+    if (task.id) {
+      await client.request<Task, UpdateTask>(UPDATE_TASK, {
+        id: task.id,
+        input: taskToSave,
+      });
+    } else {
+      await client.request<Task, CreateTask>(CREATE_TASK, {input: taskToSave});
+    }
+
     goBack();
   };
 
   const handleDelete = async () => {
-    // await TaskDAO.delete(task.id);
     await client.request<Pick<Task, 'id'>, DeleteTask>(DELETE_TASK, {
       id: task.id,
     });
