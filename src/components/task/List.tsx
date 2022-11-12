@@ -84,12 +84,14 @@ export default function TaskList() {
 
   const handleStart = (task: Task) => {
     _refTask.current = task;
-    const missingTime = task.duration - task.completed_time;
-    const runtime = missingTime < task.runtime ? missingTime : task.runtime;
+    const missingTime = Number(task.duration) - Number(task.completed_time);
+    const runtime =
+      missingTime < Number(task.runtime) ? missingTime : Number(task.runtime);
 
     start(0, runtime, async time => {
-      _refTask.current.completed_time =
-        (_refTask.current.completed_time || 0) + time;
+      _refTask.current.completed_time = String(
+        (Number(_refTask.current.completed_time) || 0) + time,
+      );
 
       await client.request<Task, UpdateTask>(UPDATE_TASK, {
         id: _refTask.current.id,

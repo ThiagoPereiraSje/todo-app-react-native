@@ -1,14 +1,14 @@
 export type Status = 'TODO' | 'DONE';
 
 export type Task = {
-  id: string;
+  id?: string;
   subtitle: string;
   title: string;
-  duration: number;
-  runtime: number;
-  completed_time: number;
-  status: string;
-  fullyCompletedAt: number;
+  duration: string;
+  runtime: string;
+  completed_time: string;
+  status: Status;
+  fullyCompletedAt: string;
 };
 
 export type QueryTasks = {

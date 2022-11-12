@@ -21,8 +21,18 @@ import {
 import {useRouteAction, useRouteState} from '../../contexts/route';
 import IconButton from '../IconButton';
 
+const defaultState: Task = {
+  completed_time: '0',
+  duration: '0',
+  fullyCompletedAt: null,
+  runtime: '0',
+  status: 'TODO',
+  subtitle: '',
+  title: '',
+};
+
 export default function TaskForm() {
-  const [task, setTask] = useState<Task>({} as Task);
+  const [task, setTask] = useState<Task>(defaultState);
   const [duration, setDuration] = useState('');
   const [runtime, setRuntime] = useState('');
   const {goBack} = useRouteAction();
@@ -41,7 +51,7 @@ export default function TaskForm() {
 
   const setStatus = (value: string) => {
     const status = value as Status;
-    const fullyCompletedAt = status === 'DONE' ? Date.now() : undefined;
+    const fullyCompletedAt = status === 'DONE' ? String(Date.now()) : null;
     setTask({...task, status, fullyCompletedAt});
   };
 
@@ -50,9 +60,9 @@ export default function TaskForm() {
       TASK_BY_ID,
       {id: taskId},
     );
-    const loadedTask = result.task || ({} as Task);
-    const loadedDuration = fromS(loadedTask?.duration || 0, 'hh:mm:ss');
-    const loadedRuntime = fromS(loadedTask?.runtime || 0, 'hh:mm:ss');
+    const loadedTask = result.task || defaultState;
+    const loadedDuration = fromS(Number(loadedTask?.duration) || 0, 'hh:mm:ss');
+    const loadedRuntime = fromS(Number(loadedTask?.runtime) || 0, 'hh:mm:ss');
 
     setTask(loadedTask);
     setDuration(loadedDuration);
@@ -62,8 +72,8 @@ export default function TaskForm() {
   const handleSubmit = async () => {
     const taskToSave: Task = {
       ...task,
-      duration: moment.duration(duration).asSeconds(),
-      runtime: moment.duration(runtime).asSeconds(),
+      duration: String(moment.duration(duration).asSeconds()),
+      runtime: String(moment.duration(runtime).asSeconds()),
     };
 
     // await TaskDAO.save(taskToSave);
@@ -80,8 +90,8 @@ export default function TaskForm() {
   };
 
   useEffect(() => {
-    if (typeof params === 'number') {
-      handleLoad(String(params));
+    if (params) {
+      handleLoad(params);
     }
   }, [params]);
 
@@ -164,8 +174,8 @@ export default function TaskForm() {
             <IconButton
               iconName="rotate-left"
               size="54"
-              disabled={task?.completed_time === 0}
-              onPress={() => setTask({...task, completed_time: 0})}
+              disabled={task?.completed_time === '0'}
+              onPress={() => setTask({...task, completed_time: '0'})}
             />
             <IconButton
               iconName="save"

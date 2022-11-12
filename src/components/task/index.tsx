@@ -48,12 +48,12 @@ export default function index({task, onPlay}: TaskProps) {
         w="150"
         marginTop="1"
         min={0}
-        max={task.duration}
-        value={task.completed_time}
+        max={Number(task.duration)}
+        value={Number(task.completed_time)}
       />
       <Text fontSize="16">{`${calcPercent(
-        task.completed_time,
-        task.duration,
+        Number(task.completed_time),
+        Number(task.duration),
       )} %`}</Text>
 
       {task.status === 'TODO' && (
