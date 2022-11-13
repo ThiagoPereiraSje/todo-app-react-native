@@ -31,7 +31,7 @@ const App = () => {
         <RouterProvider>
           <TimerProvider>
             <TaskProvider>
-              <StatusBar hidden />
+              <StatusBar />
               <Navigator />
             </TaskProvider>
           </TimerProvider>

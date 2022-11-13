@@ -38,10 +38,12 @@ export default function index({task, onPlay}: TaskProps) {
         onPress={() => navigate(Routes.TaskForm, task.id)}
       />
       <Stack direction="column" space={0.4} flex={1}>
-        <Text fontWeight="bold" fontSize="20">
+        <Text isTruncated fontWeight="bold" fontSize="18">
           {task.title}
         </Text>
-        <Text fontSize="16">{task.subtitle}</Text>
+        <Text isTruncated fontSize="14">
+          {task.subtitle}
+        </Text>
       </Stack>
       <Progress
         size="xl"

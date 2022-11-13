@@ -159,10 +159,10 @@ export default function TaskList() {
           </>
         ) : (
           <>
-            <Text style={textStyle} fontSize="3xl">
+            <Text isTruncated style={textStyle} fontSize="3xl">
               {_refTask.current?.title}
             </Text>
-            <Text style={textStyle} fontSize="2xl">
+            <Text isTruncated style={textStyle} fontSize="2xl">
               {_refTask.current?.subtitle}
             </Text>
 
